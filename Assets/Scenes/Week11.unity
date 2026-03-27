@@ -500,10 +500,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19f99066105fb746bb9feb61760fbdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pulse
-  speed: 2
+  speed: 1
   curve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.025001526
+      value: 0
+      inSlope: 6.1157722
+      outSlope: 6.1157722
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.13750002
+      value: 0.68801516
+      inSlope: 2.2247286
+      outSlope: 2.2247286
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.54254305
+      value: 0.013085842
+      inSlope: 1.6218402
+      outSlope: 1.6218402
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7442575
+      value: 1.003503
+      inSlope: 0.545941
+      outSlope: 0.545941
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0083313
+      value: -0.004760742
+      inSlope: -3.8181136
+      outSlope: -3.8181136
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

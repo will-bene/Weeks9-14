@@ -16,8 +16,8 @@ public class Pulse : MonoBehaviour
     {
         //transform.position += new Vector3(speed, 0, 0)*Time.deltaTime;
         pulseProgress += speed * Time.deltaTime;
-        float xValue = pulseProgress;
-        float yValue = curve.Evaluate(pulseProgress);
+        float xValue = pulseProgress*Screen.width;
+        float yValue = curve.Evaluate(pulseProgress) * Screen.height;
 
         if (pulseProgress>1)
         {
@@ -25,6 +25,9 @@ public class Pulse : MonoBehaviour
         }
 
 
+        Vector3 truePos = Camera.main.ScreenToWorldPoint(new Vector3(xValue, yValue, 0));
+        truePos.z = 0;
+        transform.position = truePos;
 
     }
 }
