@@ -51,9 +51,9 @@ public class FlowerSpawner : MonoBehaviour
 
     public void OnRightClick(InputAction.CallbackContext context)
     {
-        if (context.started == true)
+        if (context.performed)
         {
-            //-- 
+            //-- test 
             WaterFlower();
         }
     }
