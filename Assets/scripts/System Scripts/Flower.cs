@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using System.ComponentModel;
 public class Flower : MonoBehaviour
 {
     //gorCurve
@@ -24,6 +25,8 @@ public class Flower : MonoBehaviour
 
     //grow coroutine storage
     public Coroutine growCoroutine;
+
+    
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -98,6 +101,10 @@ public class Flower : MonoBehaviour
                     StopCoroutine(growCoroutine); //stop growing
                 }
             }
+        }
+        else
+        {//finished growing, hide water slider
+            waterSlider.gameObject.SetActive(false);
         }
     }
 

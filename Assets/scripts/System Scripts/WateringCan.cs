@@ -1,25 +1,21 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.Multiplayer.Center.Common;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
-public class FlowerSpawner : MonoBehaviour
+public class WateringCan : MonoBehaviour
 {
-    public GameObject spawnPrefab;
-    public List<GameObject> spawnedFlowers;
+    public GameObject planter; //get object to get list of spawned objects from
     public GameObject cursor; //get global cursor (for transform & methods)
+    public bool selected = false;
 
     private Vector3 startingPosition;
-
-    private bool selected = false;
     public float maxScale = 1.5f;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //initialize start position
         startingPosition = transform.position;
     }
 
@@ -29,32 +25,48 @@ public class FlowerSpawner : MonoBehaviour
         ScaleOnMouseOver();
         CheckSelected();
         HandleMovement();
-        
     }
 
-    public void SpawnFlower()
+    public void WaterFlower()
     {
-        if (selected && cursor.transform.position.y>-3f) //only if this tool is selected and above the bottom half of the screen
+        
+        if (selected) //only if this tool is selected
         {
-            GameObject newFlower = Instantiate(spawnPrefab, cursor.transform.position, Quaternion.identity); //spawn a flower
-            spawnedFlowers.Add(newFlower); //add new flower to list
+            //get list of spawned flowers from spawner object
+            FlowerSpawner planterScript = planter.GetComponent<FlowerSpawner>();
+            List<GameObject> spawnedFlowers = planterScript.spawnedFlowers;
 
-            Flower flowerScript = newFlower.GetComponent<Flower>();
-            flowerScript.Initialize(); //must be initialized before starting coroutine
-            flowerScript.growCoroutine = flowerScript.StartCoroutine(flowerScript.GrowParts()); //start coroutine
+            float waterRange = 1.4f;
+            GameObject closestFlower = null;
+            //loop through all flowers, checking the closest and storing it as the closest
+            for (int i = 0; i < spawnedFlowers.Count; i++)
+            {
+                GameObject curFlower = spawnedFlowers[i]; //get current check
+                float curDistance = Vector3.Distance(curFlower.transform.position, cursor.transform.position); //get current distance
+                if (curDistance < waterRange)
+                {//its closer than the last one
+                    waterRange = curDistance; //lower range threshold
+                    closestFlower = curFlower; //set current check as closest
+                }
+            }
+
+            if (closestFlower != null)
+            {//if there is a close flower
+                Flower flowerScript = closestFlower.GetComponent<Flower>();
+                flowerScript.WaterFlower(); //water it
+            }
         }
     }
-
     public void HandleMovement()
     {//lerp to a distance around the cursor if currently selected
         Vector3 oldPosition = transform.position;
         if (selected) //only if this tool is selected
         {
             //offset cursor position to move to
-
             Vector3 goalPosition = cursor.transform.position;
             goalPosition.x += 1;
             goalPosition.y -= 1;
+
             //lerp to cursor position
             oldPosition = Vector3.Lerp(oldPosition, goalPosition, 0.05f);
         }
@@ -80,6 +92,7 @@ public class FlowerSpawner : MonoBehaviour
             }
         }
     }
+
     public bool MouseOver()
     {
         float collisionRange = 0.8f;
@@ -110,7 +123,7 @@ public class FlowerSpawner : MonoBehaviour
     public void OnClick()
     {//when mouse is clicked
         if (MouseOver() && !selected)
-        {//select self as new tool
+        {//clicked on, select self as new tool
             Cursor cursorScript = cursor.GetComponent<Cursor>();
             if (cursorScript != null)
             {
@@ -118,7 +131,8 @@ public class FlowerSpawner : MonoBehaviour
             }
         }
         
-        SpawnFlower();
+        WaterFlower();
     }
+
 
 }
