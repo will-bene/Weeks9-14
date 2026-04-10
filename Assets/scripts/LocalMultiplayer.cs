@@ -11,8 +11,11 @@ public class LocalMultiPlayer : MonoBehaviour
     public LocalMultiplayerManager manager;
 
     private Coroutine squeeze;
+    private Coroutine dash;
     public float squeezeDuration = 1f;
     public AnimationCurve AnimationCurve;
+    public TrailRenderer trailRenderer;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,6 +53,19 @@ public class LocalMultiPlayer : MonoBehaviour
         
     }
 
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (dash != null)
+            {
+                StopCoroutine(dash);
+            }
+            Debug.Log("Dash1");
+            dash = StartCoroutine(Dash());
+        }
+    }
+
     private IEnumerator SqueezePlayer()
     {
         float progress = 0;
@@ -64,6 +80,26 @@ public class LocalMultiPlayer : MonoBehaviour
             transform.localScale=newScale;
             yield return null;
         }
+    }
+
+    private IEnumerator Dash()
+    {
+        float progress = 0;
+        //enable trailrenderer
+        trailRenderer.emitting = true;
+
+        Debug.Log("Dash2");
+        while (progress < 1)
+        {
+            progress += Time.deltaTime / squeezeDuration;
+
+            moveSpeed = 6f;
+
+            yield return null;
+        }
+
+        trailRenderer.emitting = false;
+        moveSpeed = 3f;
     }
 
 }
